@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<!-- saved from url=(0045)file:///C:/wamp64/www/game/report/report.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<link rel="stylesheet" href="./Report_files/main.css">
+		
+		<link rel="shortcut icon" type="image/ico" href="file:///C:/wamp64/www/game/images/favicon.ico" width="16px" height="16px">
+		<title>Report</title>
+	</head>
+	<body>
+		<script>alert("Please note, the navigation section won't work on this report since it's HTML. Also screenshots are above, text is below.");</script>
+		<style>
+			code {
+		padding: 2px 4px;
+		font-size: 90%;
+		color: red;
+		background-color: #f98dc9;
+		border-radius: 4px;
+			}
+		</style>
+		<div id="big_wrapper">
+			
+			<!-- using the same table as leaderboard -->
+			<div class="grid-container-leaderboard">
+				<div class="top">
+					<img src="./Report_files/logo.svg" width="70px" height="auto">
+				<header>CancerCoffeeCo.</header>
+				<div id="top_menu">
+					<nav>
+						<a href="file:///C:/wamp64/www/game/report/report.html#">Home</a>
+						<a href="file:///C:/wamp64/www/game/report/report.html#">Login/Register</a>
+						<a href="file:///C:/wamp64/www/game/report/report.html#">Leanderboard</a>
+						<a href="file:///C:/wamp64/www/game/report/report.html#">Game</a>
+					</nav>
+				</div>
+			</div>
+			<div class="header">
+				<header id="top_header" class="grid">
+					<h1>Report</h1>
+				</header>
+			</div>
+			<div class="mid">
+				<video width="500px" height="auto" controls="">
+								<source src="video/form.mp4" type="video/mp4">
+							</video><p>Code	is in js/form</p><p>
+								function reg() {
+								//obtaining input elements
+								var userNameC = document.getElementById("userC").value;
+								var passWordC = document.getElementById("passwordC").value;
+								var feedbackC = document.getElementById("fbC");
+								//validation(error)
+								if ( userNameC == false   || userNameC.length &lt; 5) {
+								alert("make sure the username/password field is filled in and more than 5 characters");
+								}
+								else if (passWordC == false || passWordC.length &lt; 5) {
+								alert("make sure the username/password field is filled in and more than 5 characters");
+								}
+								//creating new account for local storage
+								else{
+								var userLog = {
+								username: userNameC,
+								password: passWordC
+								};
+								localStorage.setItem(userNameC, JSON.stringify(userLog));
+								alert("account created");
+								}
+								}
+								function login() {
+								//obtaining input elements
+								var userName = document.getElementById("user").value;
+								var passWord = document.getElementById("pass").value;
+								//console.log(accountDetails);
+								//var feedback = document.getElementById("fb");
+								//validation(error)
+								if ( userName == false   || userName.length &lt; 5) {
+								alert("make sure the username/password field is filled in and more than 5 characters");
+								}
+								else if (passWord == false || passWord.length &lt; 5) {
+								alert("make sure the username/password field is filled in and more than 5 characters");
+								}
+								else if (localStorage[userName] == undefined){
+								alert("This account does not exist.")
+								}
+								else {
+								var accountDetails = JSON.parse(localStorage[userName]);
+								if ((userName == accountDetails.username) &amp;&amp; (passWord == accountDetails.password)) {
+								alert("logged in");
+								localStorage.currentAccount = userName;
+								}
+								}
+								/*else if (localStorage[userName] == undefined){
+								alert("This account does not exist.")
+								}else if ((userName == accountDetails.username) &amp;&amp; (passWord == accountDetails.password)) {
+								alert("logged in");
+								localStorage.currentAccount = userName;
+								}
+								*/
+								}
+							</p><video width="500px" height="auto" controls="">
+								<source src="video/game.mp4" type="video/mp4">
+							</video><p>the location of the code is in /js/game.js</p><p>
+								quiz = [[],[],[],[]];
+								function generateQuiz(){
+								var easy = document.getElementById("Easy");
+								var hard = document.getElementById("Hard");
+								var difficulty;
+								if(easy.checked){difficulty = "easy";}else {difficulty = "hard";}
+								//variables
+								for(var i = 0; i &lt; quiz.length; i++){
+								var genInt1 = Math.floor(Math.random() * (100 - 1 + 1)) + 1;
+								var genInt2 = Math.floor(Math.random() * (100 - 1 + 1)) + 1;
+								var ans;
+								//selection of easy or hard
+								var arithmetic;
+								if (difficulty == "easy"){
+								arithmetic = " plus ";
+								ans = genInt1 + genInt2;
+								} else {
+								arithmetic = " times "
+								ans = genInt1 * genInt2;
+								}
+								quiz[i] = [i+1, "What is " + genInt1 + arithmetic + genInt2, ans];
+								console.log(quiz[i][1]);
+								console.log(quiz[i][2]);
+								}
+								document.getElementById("question").innerHTML = quiz[0][1];
+								}
+								//definitions
+								var counter = 0;
+								var j = 0;
+								//user submiton
+								function submit(){
+								var userAnswer = document.getElementById("ans").value;
+								var answer = quiz[j][2];
+								var score = document.getElementById("score");
+								//if correct add 1 score to counter
+								if (userAnswer == answer) {
+								ansresp.innerHTML = "correct";
+								counter++;
+								score.innerHTML = counter;
+								
+								//if incorrect remove 1 score IF score is above 0
+								}else {
+								if (counter &gt; 0) {
+								counter--
+								ansresp.innerHTML = "wrong";
+								score.innerHTML = counter;
+								
+								//notify user they've got the answer wrong, since the score is 0 don't change it (otherwise it'll be minus)
+								} else {
+								ansresp.innerHTML = "wrong";
+								score.innerHTML = counter;
+								}
+								}
+								//cycle through quiz array
+								if (j &lt; quiz.length &amp;&amp; j != quiz.length -1){
+								j++;
+								//show question
+								document.getElementById("question").innerHTML = quiz[j][1];
+								} else{
+								//when done cycling through array
+								var localLog = localStorage.getItem("currentAccount");
+								var account = JSON.parse(localStorage.getItem(localLog));
+								account.newScore = counter;
+								localStorage.setItem(localLog, JSON.stringify(account));
+								document.getElementById("question").innerHTML = "The END!";
+								location.reload();
+								}
+								}
+							</p><video width="500px" height="auto" controls="">
+									<source src="video/leaderboard.mp4" type="video/mp4">
+								</video><p>Code	is in js/table.js</p><p>window.onload = tabgen;
+									function tabgen() {
+									debugger;
+									var sctable = [];
+									var valid = false;
+									if (localStorage.length &gt; 0){
+									for (var i = 0; i &lt; localStorage.length; i++){
+									if( localStorage.key(i) != "currentAccount"){
+									var location =JSON.parse(localStorage.getItem(localStorage.key(i)));
+									sctable.push(location);
+									valid = true;
+									}
+									
+									}
+									
+									}
+									if (valid) {
+									var table = document.getElementById("highscores");
+									for(var i = 0; i &lt; sctable.length; i++){
+									table.innerHTML = table.innerHTML + ("</p>");
+									}
+									}
+									}
+								<p></p><table>
+					<thead>
+						<tr>
+							<th>Report</th>
+						</tr>
+					</thead>
+					<tbody>
+						
+						<tr>   </tr>
+							
+						
+						<tr>
+							<td>
+								<h2></h2>
+								<p style="font-size: 15px;">advanced JavaScript such as objects
+									and arrays. &amp; advanced game features, such as
+									graphics, animation, multiple skill
+									levels.
+								</p>
+								<article style="font-size: 15px; text-align: left;">
+									<p>an object used in the game is "score.innerHTML = counter;" this is used in order to set the score value for the user, it updates as the user plays but does not go below zero, an array used was quiz = [[],[],[],[]]; the reason as to why the array is empty is due to the fact that the questions were randomly generated and when generated they were stored within that array, the code below shows how it's generated, firstly creates random numbers based on the quiz length, the answer is created when the user has selected the difficulty. within the code you can also see the generation based on what the user selects </p>
+									<p>for(var i = 0; i &lt; quiz.length; i++){
+										var genInt1 = Math.floor(Math.random() * (100 - 1 + 1)) + 1;
+										var genInt2 = Math.floor(Math.random() * (100 - 1 + 1)) + 1;
+										var ans;
+										//selection of easy or hard
+										var arithmetic;
+										if (difficulty == "easy"){
+										arithmetic = " plus ";
+										ans = genInt1 + genInt2;
+										} else {
+										arithmetic = " times "
+										ans = genInt1 * genInt2;
+										}
+										quiz[i] = [i+1, "What is " + genInt1 + arithmetic + genInt2, ans];
+										console.log(quiz[i][1]);
+										console.log(quiz[i][2]);
+										}
+										document.getElementById("question").innerHTML = quiz[0][1];
+									}</p>
+								</article>
+								<p style="font-size: 15px;">obtaining score
+								</p>
+								<article style="font-size: 15px; text-align: left;">
+									<p>based on if they get the answer correct or not will change the score, if they've got it correct a point is added, if incorrect a point is removed. However it will not go below zero </p>
+									<p>//if correct add 1 score to counter
+										if (userAnswer == answer) {
+										ansresp.innerHTML = "correct";
+										counter++;
+										score.innerHTML = counter;
+										
+										//if incorrect remove 1 score IF score is above 0
+										}else {
+										if (counter &gt; 0) {
+										counter--
+										ansresp.innerHTML = "wrong";
+										score.innerHTML = counter;
+										
+										//notify user they've got the answer wrong, since the score is 0 don't change it (otherwise it'll be minus)
+										} else {
+										ansresp.innerHTML = "wrong";
+										score.innerHTML = counter;
+										}
+										}
+									}</p>
+								</article>
+								<p style="font-size: 15px;">User registration with JavaScript validation and error message. &amp; Store user data in local storage in
+									JSON format (no mark for database
+									storage).
+								</p>
+								<article style="font-size: 15px; text-align: left;">
+									<p>this code shows the validation steps taken if the username or password doesn't meet the criteria they're unable to create the account </p>
+									<p>var userNameC = document.getElementById("userC").value;
+										var passWordC = document.getElementById("passwordC").value;
+										var feedbackC = document.getElementById("fbC");
+										//validation(error)
+										if ( userNameC == false   || userNameC.length &lt; 5) {
+										alert("make sure the username/password field is filled in and more than 5 characters");
+										}
+										else if (passWordC == false || passWordC.length &lt; 5) {
+										alert("make sure the username/password field is filled in and more than 5 characters");
+										}
+										//creating new account for local storage
+										else{
+										var userLog = {
+										username: userNameC,
+										password: passWordC
+										};
+										localStorage.setItem(userNameC, JSON.stringify(userLog));
+										alert("account created");
+										}
+										}
+									}</p>
+								</article>
+								<p style="font-size: 15px;">User login with with JavaScript validation and error message.
+								</p>
+								<article style="font-size: 15px; text-align: left;">
+									<p>this code shows the validation steps taken if the username or password doesn't meet the criteria they're unable to login, if the username and password is incorrect they're unable to login</p>
+									<p>function login() {
+										//obtaining input elements
+										var userName = document.getElementById("user").value;
+										var passWord = document.getElementById("pass").value;
+										//console.log(accountDetails);
+										//var feedback = document.getElementById("fb");
+										//validation(error)
+										if ( userName == false   || userName.length &lt; 5) {
+										alert("make sure the username/password field is filled in and more than 5 characters");
+										}
+										else if (passWord == false || passWord.length &lt; 5) {
+										alert("make sure the username/password field is filled in and more than 5 characters");
+										}
+										else if (localStorage[userName] == undefined){
+										alert("This account does not exist.")
+										}
+										else {
+										var accountDetails = JSON.parse(localStorage[userName]);
+										if ((userName == accountDetails.username) &amp;&amp; (passWord == accountDetails.password)) {
+										alert("logged in");
+										localStorage.currentAccount = userName;
+										}
+									}</p>
+								</article>
+								<p style="font-size: 15px;">User login with with JavaScript validation and error message.
+								</p>
+								<article style="font-size: 15px; text-align: left;">
+									<p>this code shows the validation steps taken if the username or password doesn't meet the criteria they're unable to login, if the username and password is incorrect they're unable to login</p>
+									<p>function login() {
+										//obtaining input elements
+										var userName = document.getElementById("user").value;
+										var passWord = document.getElementById("pass").value;
+										//console.log(accountDetails);
+										//var feedback = document.getElementById("fb");
+										//validation(error)
+										if ( userName == false   || userName.length &lt; 5) {
+										alert("make sure the username/password field is filled in and more than 5 characters");
+										}
+										else if (passWord == false || passWord.length &lt; 5) {
+										alert("make sure the username/password field is filled in and more than 5 characters");
+										}
+										else if (localStorage[userName] == undefined){
+										alert("This account does not exist.")
+										}
+										else {
+										var accountDetails = JSON.parse(localStorage[userName]);
+										if ((userName == accountDetails.username) &amp;&amp; (passWord == accountDetails.password)) {
+										alert("logged in");
+										localStorage.currentAccount = userName;
+										}
+									}</p>
+								</article>
+								<p style="font-size: 15px;">User login with with JavaScript validation and error message.
+								</p>
+								<article style="font-size: 15px; text-align: left;">
+									<p>this code shows the validation steps taken if the username or password doesn't meet the criteria they're unable to login, if the username and password is incorrect they're unable to login</p>
+									<p>function login() {
+										//obtaining input elements
+										var userName = document.getElementById("user").value;
+										var passWord = document.getElementById("pass").value;
+										//console.log(accountDetails);
+										//var feedback = document.getElementById("fb");
+										//validation(error)
+										if ( userName == false   || userName.length &lt; 5) {
+										alert("make sure the username/password field is filled in and more than 5 characters");
+										}
+										else if (passWord == false || passWord.length &lt; 5) {
+										alert("make sure the username/password field is filled in and more than 5 characters");
+										}
+										else if (localStorage[userName] == undefined){
+										alert("This account does not exist.")
+										}
+										else {
+										var accountDetails = JSON.parse(localStorage[userName]);
+										if ((userName == accountDetails.username) &amp;&amp; (passWord == accountDetails.password)) {
+										alert("logged in");
+										localStorage.currentAccount = userName;
+										}
+									}</p>
+								</article>
+								<p style="font-size: 15px;">User login with with JavaScript validation and error message.
+								</p>
+								<article style="font-size: 15px; text-align: left;">
+									<p>this code shows the validation steps taken if the username or password doesn't meet the criteria they're unable to login, if the username and password is incorrect they're unable to login</p>
+									<p>function login() {
+										//obtaining input elements
+										var userName = document.getElementById("user").value;
+										var passWord = document.getElementById("pass").value;
+										//console.log(accountDetails);
+										//var feedback = document.getElementById("fb");
+										//validation(error)
+										if ( userName == false   || userName.length &lt; 5) {
+										alert("make sure the username/password field is filled in and more than 5 characters");
+										}
+										else if (passWord == false || passWord.length &lt; 5) {
+										alert("make sure the username/password field is filled in and more than 5 characters");
+										}
+										else if (localStorage[userName] == undefined){
+										alert("This account does not exist.")
+										}
+										else {
+										var accountDetails = JSON.parse(localStorage[userName]);
+										if ((userName == accountDetails.username) &amp;&amp; (passWord == accountDetails.password)) {
+										alert("logged in");
+										localStorage.currentAccount = userName;
+										}
+									}</p>
+								</article>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h2>First video shows login/register &amp; validation</h2>
+								<p style="font-size: 15px;">Second video shows game &amp; difficulty</p>
+								<p style="font-size: 15px">third video shows leaderboard</p>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<p style="font-size: 30px;">No third party libary was used. sort to high to low was not done.
+								</p>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="footer">
+				<footer>
+					<p>CancerCoffee Co.</p>
+				</footer>
+			</div>
+		</div>
+	
+</div>
+</body></html>
